@@ -34,20 +34,20 @@ AuthenticationResult authenticationResult = await app
 // authenticationResult.AccessToken is the bearer token
 Console.WriteLine($"Authentication result: {authenticationResult.AccessToken}");
 
-// Step 3: Call Econ API: Differentiate
+// Step 3: Call Econ API: Derivative
 try
 {
-    // Create a new POST body for the Differentiate API
-    AndoEconDifferentiateRequestModel request = new AndoEconDifferentiateRequestModel
+    // Create a new POST body for the Derivative API
+    AndoEconDerivativeRequestModel request = new AndoEconDerivativeRequestModel
     {
         Symbols = "x",
         Fx = "x**5 + 7*x**4 + 3"
     };
 
     AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(authenticationResult.AccessToken);
-    AndoEconDifferentiateResponseModel response = await andoEconAPIProvider.DifferentiateAsync(request);
+    AndoEconDerivativeResponseModel response = await andoEconAPIProvider.DerivativeAsync(request);
 
-    Console.WriteLine($"Response (Differentiate):");
+    Console.WriteLine($"Response (Derivative):");
     Console.WriteLine($"Fx: {response?.Fx}");
     Console.WriteLine($"Derivative: {response?.Derivative}");
 }
@@ -56,11 +56,11 @@ catch (Exception e)
     Console.WriteLine(e.Message);
 }
 
-// Step 4: Call Econ API: MarginalUtility
+// Step 4: Call Econ API: PartialDerivative
 try
 {
     // Create a new POST body for the MarginalUtility API
-    AndoEconMarginalUtilityRequestModel request = new AndoEconMarginalUtilityRequestModel
+    AndoEconPartialDerivativeRequestModel request = new AndoEconPartialDerivativeRequestModel
     {
         Symbols = "c p",
         Fx = "sqrt(p * c)",
@@ -68,11 +68,11 @@ try
     };
 
     AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(authenticationResult.AccessToken);
-    AndoEconMarginalUtilityResponseModel response = await andoEconAPIProvider.MarginalUtilityAsync(request);
+    AndoEconPartialDerivativeResponseModel response = await andoEconAPIProvider.PartialDerivativeAsync(request);
 
-    Console.WriteLine($"Response (MarginalUtility):");
+    Console.WriteLine($"Response (PartialDerivative):");
     Console.WriteLine($"Fx: {response?.Fx}");
-    Console.WriteLine($"MarginalUtility: {response?.MarginalUtility}");
+    Console.WriteLine($"PartialDerivative: {response?.PartialDerivative}");
 }
 catch (Exception e)
 {

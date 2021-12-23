@@ -20,14 +20,14 @@ namespace EconTool
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + bearer);
         }
 
-        public async Task<AndoEconDifferentiateResponseModel> DifferentiateAsync(AndoEconDifferentiateRequestModel request)
+        public async Task<AndoEconDerivativeResponseModel> DerivativeAsync(AndoEconDerivativeRequestModel request)
         {
-            return await CallAPIAsync<AndoEconDifferentiateRequestModel, AndoEconDifferentiateResponseModel>(request, "Differentiate");
+            return await CallAPIAsync<AndoEconDerivativeRequestModel, AndoEconDerivativeResponseModel>(request, "Derivative");
         }
 
-        public async Task<AndoEconMarginalUtilityResponseModel> MarginalUtilityAsync(AndoEconMarginalUtilityRequestModel request)
+        public async Task<AndoEconPartialDerivativeResponseModel> PartialDerivativeAsync(AndoEconPartialDerivativeRequestModel request)
         {
-            return await CallAPIAsync<AndoEconMarginalUtilityRequestModel, AndoEconMarginalUtilityResponseModel>(request, "MarginalUtility");
+            return await CallAPIAsync<AndoEconPartialDerivativeRequestModel, AndoEconPartialDerivativeResponseModel>(request, "PartialDerivative");
         }
 
         public async Task<AndoEconSolveResponseModel> SolveAsync(AndoEconSolveRequestModel request)

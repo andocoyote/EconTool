@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 namespace EconTool
 {
     //
-    // Differentiate API
+    // Derivative API
     /*
     {
         "symbols": "x",
         "fx": "x**5 + 7*x**4 + 3"
     }
     */
-    public class AndoEconDifferentiateRequestModel
+    public class AndoEconDerivativeRequestModel
     {
         public string Symbols { get; set; } = "";
         public string Fx { get; set; } = "";
@@ -26,14 +26,14 @@ namespace EconTool
         "derivative": "5*x**4 + 28*x**3"
     }
     */
-    public class AndoEconDifferentiateResponseModel
+    public class AndoEconDerivativeResponseModel
     {
         public string Fx { get; set; } = "";
         public string Derivative { get; set; } = "";
     }
 
     //
-    // MarginalUtility API
+    // PartialDerivative API
     /*
     {
         "symbols": "c p",
@@ -41,7 +41,7 @@ namespace EconTool
         "variable": "c"
     }
     */
-    public class AndoEconMarginalUtilityRequestModel
+    public class AndoEconPartialDerivativeRequestModel
     {
         public string Symbols { get; set; } = "";
         public string Fx { get; set; } = "";
@@ -54,10 +54,10 @@ namespace EconTool
         "MarginalUtility": "sqrt(c*p)/(2*c)"
     }
     */
-    public class AndoEconMarginalUtilityResponseModel
+    public class AndoEconPartialDerivativeResponseModel
     {
         public string Fx { get; set; } = "";
-        public string MarginalUtility { get; set; } = "";
+        public string PartialDerivative { get; set; } = "";
     }
 
     //
