@@ -10,14 +10,14 @@ namespace EconTool
 {
     public class KeyVaultProvider
     {
-        private string keyVaultName = "kv-general-key-vault";
-        private SecretClient client;
+        private string _keyVaultName = "kv-general-key-vault";
+        private SecretClient _client = null;
 
         public KeyVaultProvider()
         {
             // The executing user must have an access policy in the Key Vault
-            client = new SecretClient(
-                new Uri("https://" + keyVaultName + ".vault.azure.net"),
+            _client = new SecretClient(
+                new Uri("https://" + _keyVaultName + ".vault.azure.net"),
                 new DefaultAzureCredential());
         }
 
@@ -47,7 +47,7 @@ namespace EconTool
 
         private async Task<string> GetKeyVaultSecret(string secretname)
         {
-            Azure.Response<KeyVaultSecret> secret = await client.GetSecretAsync(secretname);
+            Azure.Response<KeyVaultSecret> secret = await _client.GetSecretAsync(secretname);
             string tokenSecret = secret?.Value?.Value;
 
             return tokenSecret;

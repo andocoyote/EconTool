@@ -10,15 +10,15 @@ namespace EconTool
 {
     public class AndoEconAPIProvider
     {
-        HttpClient client = new HttpClient();
+        HttpClient _client = new HttpClient();
 
         public AndoEconAPIProvider(string bearer)
         {
-            client.BaseAddress = new Uri("https://andoeconapis.azurewebsites.net/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
+            _client.BaseAddress = new Uri("https://andoeconapis.azurewebsites.net/");
+            _client.DefaultRequestHeaders.Accept.Clear();
+            _client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.Add("Authorization", "Bearer " + bearer);
+            _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + bearer);
         }
 
         public async Task<AndoEconDerivativeResponseModel> DerivativeAsync(AndoEconDerivativeRequestModel request)
@@ -45,7 +45,7 @@ namespace EconTool
         {
             TResponse response = default(TResponse);
 
-            HttpResponseMessage responsemessage = await client.PostAsJsonAsync(
+            HttpResponseMessage responsemessage = await _client.PostAsJsonAsync(
                 $"api/{api}", request);
 
             //response.EnsureSuccessStatusCode();
