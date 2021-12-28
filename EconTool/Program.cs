@@ -3,7 +3,7 @@
 using EconTool;
 using Microsoft.Identity.Client;
 
-Console.WriteLine($"Arg count: {args.Length}");
+Console.WriteLine($"{args.Length} arguments supplied.");
 
 ServicePrincipalProvider servicePrincipalProvider = new ServicePrincipalProvider();
 ServicePrincipalModel servicePrincipalModel = servicePrincipalProvider.GetServicePrincipalModel();
@@ -79,11 +79,11 @@ catch (Exception e)
     Console.WriteLine(e.Message);
 }
 
-// Step 5: Call Econ API: Solve
+// Step 5: Call Econ API: Evaluate
 try
 {
-    // Create a new POST body for the Solve API
-    AndoEconSolveRequestModel request = new AndoEconSolveRequestModel
+    // Create a new POST body for the Evaluate API
+    AndoEconEvaluateRequestModel request = new AndoEconEvaluateRequestModel
     {
         Symbols = "p c",
         Fx = "sqrt(c*p)/(2*c)",
@@ -95,11 +95,55 @@ try
     };
 
     AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(authenticationResult.AccessToken);
+    AndoEconEvaluateResponseModel response = await andoEconAPIProvider.EvaluateAsync(request);
+
+    Console.WriteLine($"Response (Evaluate):");
+    Console.WriteLine($"Fx: {response?.Fx}");
+    Console.WriteLine($"Result: {response?.Result}");
+}
+catch (Exception e)
+{
+    Console.WriteLine(e.Message);
+}
+
+// Step 6: Call Econ API: Solve
+try
+{
+    // Create a new POST body for the Solve API
+    AndoEconSolveRequestModel request = new AndoEconSolveRequestModel
+    {
+        Symbols = "q",
+        Fx = "12 - 2/3*q"
+    };
+
+    AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(authenticationResult.AccessToken);
     AndoEconSolveResponseModel response = await andoEconAPIProvider.SolveAsync(request);
 
     Console.WriteLine($"Response (Solve):");
     Console.WriteLine($"Fx: {response?.Fx}");
-    Console.WriteLine($"Result: {response?.Result}");
+    Console.WriteLine($"Result: {String.Join(", ", response?.Result.ToArray())}");
+}
+catch (Exception e)
+{
+    Console.WriteLine(e.Message);
+}
+
+// Step 7: Call Econ API: Solve
+try
+{
+    // Create a new POST body for the Solve API
+    AndoEconSolveRequestModel request = new AndoEconSolveRequestModel
+    {
+        Symbols = "x",
+        Fx = "5*x**2 + 6*x + 1"
+    };
+
+    AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(authenticationResult.AccessToken);
+    AndoEconSolveResponseModel response = await andoEconAPIProvider.SolveAsync(request);
+
+    Console.WriteLine($"Response (Solve):");
+    Console.WriteLine($"Fx: {response?.Fx}");
+    Console.WriteLine($"Result: {String.Join(", ", response?.Result.ToArray())}");
 }
 catch (Exception e)
 {

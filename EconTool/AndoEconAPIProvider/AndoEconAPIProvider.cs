@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -30,6 +31,11 @@ namespace EconTool
             return await CallAPIAsync<AndoEconPartialDerivativeRequestModel, AndoEconPartialDerivativeResponseModel>(request, "PartialDerivative");
         }
 
+        public async Task<AndoEconEvaluateResponseModel> EvaluateAsync(AndoEconEvaluateRequestModel request)
+        {
+            return await CallAPIAsync<AndoEconEvaluateRequestModel, AndoEconEvaluateResponseModel>(request, "Evaluate");
+        }
+
         public async Task<AndoEconSolveResponseModel> SolveAsync(AndoEconSolveRequestModel request)
         {
             return await CallAPIAsync<AndoEconSolveRequestModel, AndoEconSolveResponseModel>(request, "Solve");
@@ -46,7 +52,8 @@ namespace EconTool
 
             if (responsemessage.IsSuccessStatusCode)
             {
-                response = await responsemessage.Content.ReadFromJsonAsync<TResponse>();
+                string json = await responsemessage.Content.ReadAsStringAsync();
+                response = JsonConvert.DeserializeObject<TResponse>(json);
             }
 
             // return URI of the created resource.

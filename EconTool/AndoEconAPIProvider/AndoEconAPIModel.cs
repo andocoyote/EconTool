@@ -61,7 +61,7 @@ namespace EconTool
     }
 
     //
-    // Solve API
+    // Evaluate API
     /*
     {
         "symbols": "p c",
@@ -73,7 +73,7 @@ namespace EconTool
         }
     }
     */
-    public class AndoEconSolveRequestModel
+    public class AndoEconEvaluateRequestModel
     {
         public string Symbols { get; set; } = "";
         public string Fx { get; set; } = "";
@@ -87,9 +87,35 @@ namespace EconTool
         "result": "0.790569415042095"
     }
     */
-    public class AndoEconSolveResponseModel
+    public class AndoEconEvaluateResponseModel
     {
         public string Fx { get; set; } = "";
         public string Result { get; set; } = "";
+    }
+
+    //
+    // Solve API
+    /*
+    {
+        "symbols": "q",
+        "fx": "12 - 2/3*q"
+    }
+    */
+    public class AndoEconSolveRequestModel
+    {
+        public string Symbols { get; set; } = "";
+        public string Fx { get; set; } = "";
+    }
+
+    /*
+    {
+        "fx": "12 - 2/3*q",
+        "result": "[18]"
+    }
+    */
+    public class AndoEconSolveResponseModel
+    {
+        public string Fx { get; set; } = "";
+        public List<double> Result { get; set; }
     }
 }
