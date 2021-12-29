@@ -223,4 +223,54 @@ namespace EconTool.Tests
             Console.WriteLine($"TotalRevenue: {_response?.TotalRevenue}");
         }
     }
+
+    /// <summary>
+    /// Tests the MaximumProfit API
+    /// </summary>
+    public class MaximumProfitTest : IEconToolTest
+    {
+        private string _accessToken = null;
+        private AndoEconMaximumProfitRequestModel _request = null;
+        private AndoEconMaximumProfitResponseModel _response = null;
+
+        public MaximumProfitTest(string AccessToken, string Symbols, string Fx, string Cx)
+        {
+            this._accessToken = AccessToken;
+
+            // Create a new POST body for the MaximumProfit API
+            _request = new AndoEconMaximumProfitRequestModel
+            {
+                Symbols = Symbols,
+                Fx = Fx,
+                Cx = Cx
+            };
+        }
+
+        public async Task Run()
+        {
+            // Call Econ API: Solve
+            try
+            {
+                AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_accessToken);
+                _response = await andoEconAPIProvider.MaximumProfitAsync(_request);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"MaximumProfitTest failed with the following exception: {e}");
+            }
+        }
+
+        public void Display()
+        {
+            Console.WriteLine($"Response (MaximumProfit):");
+            Console.WriteLine($"DemandFunction: {_response?.DemandFunction}");
+            Console.WriteLine($"CostFunction: {_response?.CostFunction}");
+            Console.WriteLine($"RevenueFunction: {_response?.RevenueFunction}");
+            Console.WriteLine($"ProfitFunction: {_response?.ProfitFunction}");
+            Console.WriteLine($"MarginalProfitFunction: {_response?.MarginalProfitFunction}");
+            Console.WriteLine($"OptimumQuantity: {_response?.OptimumQuantity}");
+            Console.WriteLine($"ItemPrice: {_response?.ItemPrice}");
+            Console.WriteLine($"TotalRevenue: {_response?.TotalRevenue}");
+        }
+    }
 }

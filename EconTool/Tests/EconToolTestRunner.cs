@@ -62,6 +62,13 @@ namespace EconTool.Tests
                     Symbols: "x",
                     Fx: "10 - 0.001*x"));
 
+            _tests.Add(
+                new MaximumProfitTest(
+                    AccessToken: _authenticationResult.AccessToken,
+                    Symbols: "x",
+                    Fx: "10 - 0.001*x",
+                    Cx: "5000 + 2*x"));
+
             foreach (IEconToolTest test in _tests)
             {
                 await test.Run();
