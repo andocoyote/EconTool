@@ -176,4 +176,51 @@ namespace EconTool.Tests
             Console.WriteLine($"Result: {String.Join(", ", _response?.Result.ToArray())}");
         }
     }
+
+    /// <summary>
+    /// Tests the MaximumRevenue API
+    /// </summary>
+    public class MaximumRevenueTest : IEconToolTest
+    {
+        private string _accessToken = null;
+        private AndoEconMaximumRevenueRequestModel _request = null;
+        private AndoEconMaximumRevenueResponseModel _response = null;
+
+        public MaximumRevenueTest(string AccessToken, string Symbols, string Fx)
+        {
+            this._accessToken = AccessToken;
+
+            // Create a new POST body for the MaximumRevenue API
+            _request = new AndoEconMaximumRevenueRequestModel
+            {
+                Symbols = Symbols,
+                Fx = Fx
+            };
+        }
+
+        public async Task Run()
+        {
+            // Call Econ API: Solve
+            try
+            {
+                AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_accessToken);
+                _response = await andoEconAPIProvider.MaximumRevenueAsync(_request);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"MaximumRevenueTest failed with the following exception: {e}");
+            }
+        }
+
+        public void Display()
+        {
+            Console.WriteLine($"Response (MaximumRevenue):");
+            Console.WriteLine($"DemandFunction: {_response?.DemandFunction}");
+            Console.WriteLine($"RevenueFunction: {_response?.RevenueFunction}");
+            Console.WriteLine($"MarginalRevenueFunction: {_response?.MarginalRevenueFunction}");
+            Console.WriteLine($"OptimumQuantity: {_response?.OptimumQuantity}");
+            Console.WriteLine($"ItemPrice: {_response?.ItemPrice}");
+            Console.WriteLine($"TotalRevenue: {_response?.TotalRevenue}");
+        }
+    }
 }

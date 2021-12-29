@@ -118,4 +118,38 @@ namespace EconTool
         public string Fx { get; set; } = "";
         public List<double> Result { get; set; }
     }
+
+    //
+    // MaximumRevenue API
+    /*
+    {
+        "symbols": "x",
+        "fx": "10 - 0.001*x"
+    }
+    */
+    public class AndoEconMaximumRevenueRequestModel
+    {
+        public string Symbols { get; set; } = "";
+        public string Fx { get; set; } = "";
+    }
+
+    /*
+    {
+        "demandFunction": "10 - 0.001*x",
+        "revenueFunction": "x * (10 - 0.001*x)",
+        "marginalRevenueFunction": "10 - 0.002*x",
+        "optimumQuantity": 5000.0,
+        "itemPrice": 5.0,
+        "totalRevenue": 25000.0
+    }
+    */
+    public class AndoEconMaximumRevenueResponseModel
+    {
+        public string DemandFunction { get; set; } = "";
+        public string RevenueFunction { get; set; } = "";
+        public string MarginalRevenueFunction { get; set; } = "";
+        public double OptimumQuantity { get; set; } = 0.0;
+        public double ItemPrice { get; set; } = 0.0;
+        public double TotalRevenue { get; set; } = 0.0;
+    }
 }

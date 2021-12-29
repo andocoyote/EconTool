@@ -41,6 +41,11 @@ namespace EconTool
             return await CallAPIAsync<AndoEconSolveRequestModel, AndoEconSolveResponseModel>(request, "Solve");
         }
 
+        public async Task<AndoEconMaximumRevenueResponseModel> MaximumRevenueAsync(AndoEconMaximumRevenueRequestModel request)
+        {
+            return await CallAPIAsync<AndoEconMaximumRevenueRequestModel, AndoEconMaximumRevenueResponseModel>(request, "MaximumRevenue");
+        }
+
         public async Task<TResponse> CallAPIAsync<TRequest, TResponse>(TRequest request, string api)
         {
             TResponse response = default(TResponse);
