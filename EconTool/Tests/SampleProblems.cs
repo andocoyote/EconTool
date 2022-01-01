@@ -9,8 +9,6 @@ namespace EconTool.Tests
 {
     public class SampleProblems
     {
-        private AuthenticationResult _authenticationResult = null;
-
         public SampleProblems()
         {
             ;
@@ -32,7 +30,7 @@ namespace EconTool.Tests
             */
             try
             {
-                await Setup();
+                EconTool.Authenticator.Authenticator authenticator = EconTool.Authenticator.Authenticator.Instance;
 
                 string symbols = "x";
                 string priceEquation = "10 - 0.001 * " + symbols;
@@ -47,7 +45,7 @@ namespace EconTool.Tests
                     Fx = revenueEquation
                 };
 
-                AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_authenticationResult.AccessToken);
+                AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(authenticator.AccessToken);
                 AndoEconDerivativeResponseModel marginalRevenueResponse = await andoEconAPIProvider.DerivativeAsync(marginalRevenueRequest);
 
                 Console.WriteLine($"Marginal revenue function: {marginalRevenueResponse?.Derivative}");
@@ -96,38 +94,6 @@ namespace EconTool.Tests
             {
                 Console.WriteLine($"SampleProblem failed with the following exception: {e}");
             }
-        }
-
-        private async Task Setup()
-        {
-            ServicePrincipalProvider servicePrincipalProvider = new ServicePrincipalProvider();
-            ServicePrincipalModel servicePrincipalModel = servicePrincipalProvider.GetServicePrincipalModel();
-
-            Console.WriteLine($"ClientID: {servicePrincipalModel.ClientID}");
-            Console.WriteLine($"TokenSecret: {servicePrincipalModel.TokenSecret}");
-            Console.WriteLine($"TenantId: {servicePrincipalModel.TenantID}");
-            Console.WriteLine($"AppIDURI: {servicePrincipalModel.AppIDURI}");
-
-
-            // Step 1: Initialize MSAL which will be used to connect to the Econ APIs
-            // Initialize Microsoft Authentication Library (MSAL, in the Microsoft.Identity.Client package)
-            // MSLA is the library that's used to sign in users and request tokens for
-            // accessing an API protected by the Microsoft identity platform
-            IConfidentialClientApplication app = ConfidentialClientApplicationBuilder
-                .Create(servicePrincipalModel.ClientID)
-                .WithClientSecret(servicePrincipalModel.TokenSecret)
-                .WithAuthority(new Uri($"https://login.microsoftonline.com/{servicePrincipalModel.TenantID}"))
-                .Build();
-
-            string[] scopes = { servicePrincipalModel.AppIDURI + "/.default" };
-
-            // Step 2: Obtain the bearer token
-            this._authenticationResult = await app
-                .AcquireTokenForClient(scopes)
-                .ExecuteAsync();
-
-            // authenticationResult.AccessToken is the bearer token
-            Console.WriteLine($"Authentication result: {_authenticationResult.AccessToken}");
         }
     }
 }
