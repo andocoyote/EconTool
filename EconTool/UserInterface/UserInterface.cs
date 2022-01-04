@@ -89,10 +89,10 @@ namespace EconTool.UserInterface
 
         private async Task<string> CalculateDerivative()
         {
-            Console.Write("Enter the function: ");
+            Console.Write("Enter the function (e.g. x**5 + 7*x**4 + 3): ");
             string fx = Console.ReadLine();
 
-            Console.Write("Enter the symbol(s) separated by spaces: ");
+            Console.Write("Enter the symbol (e.g. x): ");
             string symbols = Console.ReadLine();
 
             AndoEconDerivativeRequestModel request = new AndoEconDerivativeRequestModel
@@ -104,20 +104,22 @@ namespace EconTool.UserInterface
             AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_authenticator.AccessToken);
             AndoEconDerivativeResponseModel response = await andoEconAPIProvider.DerivativeAsync(request);
 
-            Console.WriteLine($"Derivative: {response?.Derivative}");
+            string result = ParseResult(response?.Derivative);
+
+            Console.WriteLine($"Derivative: {result}");
 
             return response?.Derivative;
         }
 
         private async Task<string> CalculatePartialDerivative()
         {
-            Console.Write("Enter the function: ");
+            Console.Write("Enter the function (e.g. sqrt(p * c)): ");
             string fx = Console.ReadLine();
 
-            Console.Write("Enter the symbol(s) separated by spaces: ");
+            Console.Write("Enter the symbol(s) separated by spaces (e.g c p): ");
             string symbols = Console.ReadLine();
 
-            Console.Write("Enter the variable with respect which to calculate: ");
+            Console.Write("Enter the variable with respect which to calculate (e.g c): ");
             string variable = Console.ReadLine();
 
             AndoEconPartialDerivativeRequestModel request = new AndoEconPartialDerivativeRequestModel
@@ -130,17 +132,19 @@ namespace EconTool.UserInterface
             AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_authenticator.AccessToken);
             AndoEconPartialDerivativeResponseModel response = await andoEconAPIProvider.PartialDerivativeAsync(request);
 
-            Console.WriteLine($"PartialDerivative: {response?.PartialDerivative}");
+            string result = ParseResult(response?.PartialDerivative);
+
+            Console.WriteLine($"PartialDerivative: {result}");
 
             return response?.PartialDerivative;
         }
 
         private async Task<string> EvaluateFunction()
         {
-            Console.Write("Enter the function: ");
+            Console.Write("Enter the function (e.g. x**2 + 4*y**3): ");
             string fx = Console.ReadLine();
 
-            Console.Write("Enter the symbol(s) separated by spaces: ");
+            Console.Write("Enter the symbol(s) separated by spaces (e.g. x y): ");
             string symbols = Console.ReadLine();
 
             Console.Write("Enter the key:value pairs for all variables, separated by commas (x:5,y:8): ");
@@ -151,7 +155,7 @@ namespace EconTool.UserInterface
 
             if (rawsubs.Length != 2)
             {
-                Console.WriteLine($"The values you entered are not correctly formatted: {rawsubs}");
+                Console.WriteLine($"The values you entered are not correctly formatted: {values}");
                 return null;
             }
 
@@ -163,7 +167,7 @@ namespace EconTool.UserInterface
 
                 if (keysandvalues.Length != 2)
                 {
-                    Console.WriteLine($"The values you entered are not correctly formatted: {keysandvalues}");
+                    Console.WriteLine($"The values you entered are not correctly formatted: {values}");
                     return null;
                 }
 
@@ -180,17 +184,19 @@ namespace EconTool.UserInterface
             AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_authenticator.AccessToken);
             AndoEconEvaluateResponseModel response = await andoEconAPIProvider.EvaluateAsync(request);
 
-            Console.WriteLine($"Result: {response?.Result}");
+            string result = ParseResult(response?.Result);
+
+            Console.WriteLine($"Result: {result}");
 
             return response?.Result;
         }
 
         private async Task<string> SolveFunction()
         {
-            Console.Write("Enter the function: ");
+            Console.Write("Enter the function (e.g. 12 - 2/3*q): ");
             string fx = Console.ReadLine();
 
-            Console.Write("Enter the symbol for which to solve: ");
+            Console.Write("Enter the symbol for which to solve (e.g. q): ");
             string symbols = Console.ReadLine();
 
             AndoEconSolveRequestModel request = new AndoEconSolveRequestModel
@@ -202,9 +208,16 @@ namespace EconTool.UserInterface
             AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_authenticator.AccessToken);
             AndoEconSolveResponseModel response = await andoEconAPIProvider.SolveAsync(request);
 
-            string result = String.Join(", ", response?.Result.ToArray());
+            string result = ParseResult(response?.Result != null ? String.Join(", ", response?.Result.ToArray()) : null);
 
             Console.WriteLine($"Result: {result}");
+
+            return result;
+        }
+
+        private string ParseResult(string response)
+        {
+            string result = response != null ? response : "Result could not be calculated";
 
             return result;
         }
