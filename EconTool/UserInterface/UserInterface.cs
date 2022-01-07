@@ -35,7 +35,13 @@ namespace EconTool.UserInterface
                         await EvaluateFunction();
                         break;
                     case "p":
+                        await MaximumProfitFunction();
+                        break;
+                    case "pd":
                         await CalculatePartialDerivative();
+                        break;
+                    case "r":
+                        await MaximumRevenueFunction();
                         break;
                     case "s":
                         await SolveFunction();
@@ -72,14 +78,20 @@ namespace EconTool.UserInterface
         {
             string selection = "";
 
-            Console.WriteLine("D:   Calculate a derivative");
-            Console.WriteLine("E:   Evaluate a function");
-            Console.WriteLine("P:   Calculate a partial derivative");
-            Console.WriteLine("S:   Solve a function");
-            Console.WriteLine("SP:  Run the sample problems");
-            Console.WriteLine("T:   Run the tests");
-            Console.WriteLine("TM:  Display the test menu");
-            Console.WriteLine("Q:   Quit");
+            Console.WriteLine("Math functions:");
+            Console.WriteLine("\tD:   Calculate a derivative");
+            Console.WriteLine("\tE:   Evaluate a function");
+            Console.WriteLine("\tPD:  Calculate a partial derivative");
+            Console.WriteLine("\tS:   Solve a function");
+            Console.WriteLine("Economics functions:");
+            Console.WriteLine("\tP:   Calculate maximum profit");
+            Console.WriteLine("\tR:   Calculate maximum revenue");
+            Console.WriteLine("Test functions:");
+            Console.WriteLine("\tSP:  Run the sample problems");
+            Console.WriteLine("\tT:   Run the tests");
+            Console.WriteLine("\tTM:  Display the test menu");
+            Console.WriteLine("Other:");
+            Console.WriteLine("\tQ:   Quit");
             Console.Write("Enter your selection: ");
 
             selection = Console.ReadLine();
@@ -220,6 +232,78 @@ namespace EconTool.UserInterface
             string result = response ?? "Result could not be calculated";
 
             return result;
+        }
+
+        private async Task MaximumProfitFunction()
+        {
+            Console.Write("Enter the demand function (e.g. 10 - 0.001*x): ");
+            string fx = Console.ReadLine();
+
+            Console.Write("Enter the cost function (e.g 5000 + 2*x): ");
+            string cx = Console.ReadLine();
+
+            Console.Write("Enter the symbol(s) separated by spaces (e.g x y): ");
+            string symbols = Console.ReadLine();
+
+            AndoEconMaximumProfitRequestModel request = new AndoEconMaximumProfitRequestModel
+            {
+                Symbols = symbols,
+                Fx = fx,
+                Cx = cx
+            };
+
+            AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_authenticator.AccessToken);
+            AndoEconMaximumProfitResponseModel response = await andoEconAPIProvider.MaximumProfitAsync(request);
+
+            if (response == null)
+            {
+                Console.WriteLine($"Response (MaximumProfit): Result could not be calculated");
+            }
+            else
+            {
+                Console.WriteLine($"Response (MaximumProfit):");
+                Console.WriteLine($"DemandFunction: {response?.DemandFunction}");
+                Console.WriteLine($"CostFunction: {response?.CostFunction}");
+                Console.WriteLine($"RevenueFunction: {response?.RevenueFunction}");
+                Console.WriteLine($"ProfitFunction: {response?.ProfitFunction}");
+                Console.WriteLine($"MarginalProfitFunction: {response?.MarginalProfitFunction}");
+                Console.WriteLine($"OptimumQuantity: {response?.OptimumQuantity}");
+                Console.WriteLine($"ItemPrice: {response?.ItemPrice}");
+                Console.WriteLine($"TotalRevenue: {response?.TotalRevenue}");
+            }
+        }
+
+        private async Task MaximumRevenueFunction()
+        {
+            Console.Write("Enter the demand function (e.g. 10 - 0.001*x): ");
+            string fx = Console.ReadLine();
+
+            Console.Write("Enter the symbol(s) separated by spaces (e.g x y): ");
+            string symbols = Console.ReadLine();
+
+            AndoEconMaximumRevenueRequestModel request = new AndoEconMaximumRevenueRequestModel
+            {
+                Symbols = symbols,
+                Fx = fx
+            };
+
+            AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_authenticator.AccessToken);
+            AndoEconMaximumRevenueResponseModel response = await andoEconAPIProvider.MaximumRevenueAsync(request);
+
+            if (response == null)
+            {
+                Console.WriteLine($"Response (MaximumRevenue): Result could not be calculated");
+            }
+            else
+            {
+                Console.WriteLine($"Response (MaximumRevenue):");
+                Console.WriteLine($"DemandFunction: {response?.DemandFunction}");
+                Console.WriteLine($"RevenueFunction: {response?.RevenueFunction}");
+                Console.WriteLine($"MarginalRevenueFunction: {response?.MarginalRevenueFunction}");
+                Console.WriteLine($"OptimumQuantity: {response?.OptimumQuantity}");
+                Console.WriteLine($"ItemPrice: {response?.ItemPrice}");
+                Console.WriteLine($"TotalRevenue: {response?.TotalRevenue}");
+            }
         }
     }
 }
