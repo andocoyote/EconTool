@@ -153,7 +153,7 @@ namespace EconTool.UserInterface
             // Create the substitution dictionary of key:value pairs for all variables
             string[] rawsubs = values.Split(',');
 
-            if (rawsubs.Length != 2)
+            if (rawsubs.Length == 0)
             {
                 Console.WriteLine($"The values you entered are not correctly formatted: {values}");
                 return null;
@@ -217,7 +217,7 @@ namespace EconTool.UserInterface
 
         private string ParseResult(string response)
         {
-            string result = response != null ? response : "Result could not be calculated";
+            string result = response ?? "Result could not be calculated";
 
             return result;
         }
