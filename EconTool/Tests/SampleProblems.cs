@@ -1,17 +1,12 @@
-﻿using Microsoft.Identity.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EconTool.Tests
+﻿namespace EconTool.Tests
 {
     public class SampleProblems
     {
-        public SampleProblems()
+        private readonly IAndoEconAPIProvider _andoEconAPIProvider = null;
+
+        public SampleProblems(IAndoEconAPIProvider andoEconAPIProvider)
         {
-            ;
+            _andoEconAPIProvider = andoEconAPIProvider;
         }
 
         public async Task MaxRevenueProblem()
@@ -30,8 +25,6 @@ namespace EconTool.Tests
             */
             try
             {
-                EconTool.Authenticator.Authenticator authenticator = EconTool.Authenticator.Authenticator.Instance;
-
                 string symbols = "x";
                 string priceEquation = "10 - 0.001 * " + symbols;
                 string revenueEquation = symbols + " * (" + priceEquation + ")";
@@ -45,8 +38,7 @@ namespace EconTool.Tests
                     Fx = revenueEquation
                 };
 
-                AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(authenticator.AccessToken);
-                AndoEconDerivativeResponseModel marginalRevenueResponse = await andoEconAPIProvider.DerivativeAsync(marginalRevenueRequest);
+                AndoEconDerivativeResponseModel marginalRevenueResponse = await _andoEconAPIProvider.DerivativeAsync(marginalRevenueRequest);
 
                 Console.WriteLine($"Marginal revenue function: {marginalRevenueResponse?.Derivative}");
 
@@ -57,7 +49,7 @@ namespace EconTool.Tests
                     Fx = marginalRevenueResponse?.Derivative
                 };
 
-                AndoEconSolveResponseModel optimumQuantityResponse = await andoEconAPIProvider.SolveAsync(maxRevenueRequest);
+                AndoEconSolveResponseModel optimumQuantityResponse = await _andoEconAPIProvider.SolveAsync(maxRevenueRequest);
 
                 Console.WriteLine($"Item quantity: {String.Join(", ", optimumQuantityResponse?.Result.ToArray())}");
 
@@ -71,7 +63,7 @@ namespace EconTool.Tests
                     }
                 };
 
-                AndoEconEvaluateResponseModel itemPriceResponse = await andoEconAPIProvider.EvaluateAsync(itemPriceRequest);
+                AndoEconEvaluateResponseModel itemPriceResponse = await _andoEconAPIProvider.EvaluateAsync(itemPriceRequest);
 
                 Console.WriteLine($"Item price (dollars): {itemPriceResponse?.Result}");
 
@@ -86,7 +78,7 @@ namespace EconTool.Tests
                     }
                 };
 
-                AndoEconEvaluateResponseModel totalRevenueResponse = await andoEconAPIProvider.EvaluateAsync(totalRevenueRequest);
+                AndoEconEvaluateResponseModel totalRevenueResponse = await _andoEconAPIProvider.EvaluateAsync(totalRevenueRequest);
 
                 Console.WriteLine($"Total revenue (dollars): {totalRevenueResponse?.Result}");
             }

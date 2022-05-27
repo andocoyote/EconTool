@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EconTool
 {
-    public class KeyVaultProvider
+    public class KeyVaultProvider : IKeyVaultProvider
     {
         private string _keyVaultName = "kv-general-key-vault";
         private SecretClient _client = null;
