@@ -1,4 +1,5 @@
-﻿using Microsoft.Identity.Client;
+﻿using EconTool.AndoEconAPIProvider;
+using Microsoft.Identity.Client;
 using System;
 
 namespace EconTool.Tests
@@ -8,13 +9,13 @@ namespace EconTool.Tests
     /// </summary>
     public class DerivativeTest : IEconToolTest
     {
-        private string _accessToken = null;
+        private readonly IAndoEconAPIProvider _andoEconAPIProvider = null;
         private AndoEconDerivativeRequestModel _request = null;
         private AndoEconDerivativeResponseModel _response = null;
 
-        public DerivativeTest(string AccessToken, string Symbols, string Fx)
+        public DerivativeTest(IAndoEconAPIProvider andoEconAPIProvider, string Symbols, string Fx)
         {
-            this._accessToken = AccessToken;
+            this._andoEconAPIProvider = andoEconAPIProvider;
 
             // Create a new POST body for the Derivative API
             this._request = new AndoEconDerivativeRequestModel
@@ -22,6 +23,7 @@ namespace EconTool.Tests
                 Symbols = Symbols,
                 Fx = Fx
             };
+            _andoEconAPIProvider = andoEconAPIProvider;
         }
 
         public async Task Run()
@@ -29,8 +31,7 @@ namespace EconTool.Tests
             // Call Econ API: Derivative
             try
             {
-                AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_accessToken);
-                _response = await andoEconAPIProvider.DerivativeAsync(_request);
+                _response = await _andoEconAPIProvider.DerivativeAsync(_request);
             }
             catch (Exception e)
             {
@@ -51,13 +52,13 @@ namespace EconTool.Tests
     /// </summary>
     public class PartialDerivativeTest : IEconToolTest
     {
-        private string _accessToken = null;
+        private readonly IAndoEconAPIProvider _andoEconAPIProvider = null;
         private AndoEconPartialDerivativeRequestModel _request = null;
         private AndoEconPartialDerivativeResponseModel _response = null;
 
-        public PartialDerivativeTest(string AccessToken, string Symbols, string Fx, string Variable)
+        public PartialDerivativeTest(IAndoEconAPIProvider andoEconAPIProvider, string Symbols, string Fx, string Variable)
         {
-            this._accessToken = AccessToken;
+            this._andoEconAPIProvider = andoEconAPIProvider;
 
             // Create a new POST body for the MarginalUtility API
             _request = new AndoEconPartialDerivativeRequestModel
@@ -73,8 +74,7 @@ namespace EconTool.Tests
             // Call Econ API: Derivative
             try
             {
-                AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_accessToken);
-                _response = await andoEconAPIProvider.PartialDerivativeAsync(_request);
+                _response = await _andoEconAPIProvider.PartialDerivativeAsync(_request);
             }
             catch (Exception e)
             {
@@ -95,13 +95,13 @@ namespace EconTool.Tests
     /// </summary>
     public class EvaluateTest : IEconToolTest
     {
-        private string _accessToken = null;
+        private readonly IAndoEconAPIProvider _andoEconAPIProvider = null;
         private AndoEconEvaluateRequestModel _request = null;
         private AndoEconEvaluateResponseModel _response = null;
 
-        public EvaluateTest(string AccessToken, string Symbols, string Fx, Dictionary<string, double> Subs)
+        public EvaluateTest(IAndoEconAPIProvider andoEconAPIProvider, string Symbols, string Fx, Dictionary<string, double> Subs)
         {
-            this._accessToken = AccessToken;
+            this._andoEconAPIProvider = andoEconAPIProvider;
 
             // Create a new POST body for the Evaluate API
             _request = new AndoEconEvaluateRequestModel
@@ -117,8 +117,7 @@ namespace EconTool.Tests
             // Call Econ API: Evaluate
             try
             {
-                AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_accessToken);
-                _response = await andoEconAPIProvider.EvaluateAsync(_request);
+                _response = await _andoEconAPIProvider.EvaluateAsync(_request);
             }
             catch (Exception e)
             {
@@ -139,13 +138,13 @@ namespace EconTool.Tests
     /// </summary>
     public class SolveTest : IEconToolTest
     {
-        private string _accessToken = null;
+        private readonly IAndoEconAPIProvider _andoEconAPIProvider = null;
         private AndoEconSolveRequestModel _request = null;
         private AndoEconSolveResponseModel _response = null;
 
-        public SolveTest(string AccessToken, string Symbols, string Fx)
+        public SolveTest(IAndoEconAPIProvider andoEconAPIProvider, string Symbols, string Fx)
         {
-            this._accessToken = AccessToken;
+            this._andoEconAPIProvider = andoEconAPIProvider;
 
             // Create a new POST body for the Solve API
             _request = new AndoEconSolveRequestModel
@@ -160,8 +159,7 @@ namespace EconTool.Tests
             // Call Econ API: Solve
             try
             {
-                AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_accessToken);
-                _response = await andoEconAPIProvider.SolveAsync(_request);
+                _response = await _andoEconAPIProvider.SolveAsync(_request);
             }
             catch (Exception e)
             {
@@ -182,13 +180,13 @@ namespace EconTool.Tests
     /// </summary>
     public class MaximumRevenueTest : IEconToolTest
     {
-        private string _accessToken = null;
+        private readonly IAndoEconAPIProvider _andoEconAPIProvider = null;
         private AndoEconMaximumRevenueRequestModel _request = null;
         private AndoEconMaximumRevenueResponseModel _response = null;
 
-        public MaximumRevenueTest(string AccessToken, string Symbols, string Fx)
+        public MaximumRevenueTest(IAndoEconAPIProvider andoEconAPIProvider, string Symbols, string Fx)
         {
-            this._accessToken = AccessToken;
+            this._andoEconAPIProvider = andoEconAPIProvider;
 
             // Create a new POST body for the MaximumRevenue API
             _request = new AndoEconMaximumRevenueRequestModel
@@ -203,8 +201,7 @@ namespace EconTool.Tests
             // Call Econ API: Solve
             try
             {
-                AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_accessToken);
-                _response = await andoEconAPIProvider.MaximumRevenueAsync(_request);
+                _response = await _andoEconAPIProvider.MaximumRevenueAsync(_request);
             }
             catch (Exception e)
             {
@@ -229,13 +226,13 @@ namespace EconTool.Tests
     /// </summary>
     public class MaximumProfitTest : IEconToolTest
     {
-        private string _accessToken = null;
+        private readonly IAndoEconAPIProvider _andoEconAPIProvider = null;
         private AndoEconMaximumProfitRequestModel _request = null;
         private AndoEconMaximumProfitResponseModel _response = null;
 
-        public MaximumProfitTest(string AccessToken, string Symbols, string Fx, string Cx)
+        public MaximumProfitTest(IAndoEconAPIProvider andoEconAPIProvider, string Symbols, string Fx, string Cx)
         {
-            this._accessToken = AccessToken;
+            this._andoEconAPIProvider = andoEconAPIProvider;
 
             // Create a new POST body for the MaximumProfit API
             _request = new AndoEconMaximumProfitRequestModel
@@ -251,8 +248,7 @@ namespace EconTool.Tests
             // Call Econ API: Solve
             try
             {
-                AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_accessToken);
-                _response = await andoEconAPIProvider.MaximumProfitAsync(_request);
+                _response = await _andoEconAPIProvider.MaximumProfitAsync(_request);
             }
             catch (Exception e)
             {

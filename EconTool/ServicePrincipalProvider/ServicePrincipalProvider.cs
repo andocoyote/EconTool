@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace EconTool
+﻿namespace EconTool
 {
-    public class ServicePrincipalProvider
+    public class ServicePrincipalProvider : IServicePrincipalProvider
     {
-        public ServicePrincipalProvider()
+        private readonly IKeyVaultProvider _keyVaultProvider = null;
+
+        public ServicePrincipalProvider(IKeyVaultProvider keyVaultProvider)
         {
-            ;
+            _keyVaultProvider = keyVaultProvider;
         }
 
         // Uses the KeyVaultProvider to build an instance of the ServicePrincipalModel
@@ -20,12 +16,10 @@ namespace EconTool
 
             try
             {
-                KeyVaultProvider keyVaultProvider = new KeyVaultProvider();
-
-                string clientID = keyVaultProvider.GetClientID().GetAwaiter().GetResult();
-                string tokenSecret = keyVaultProvider.GetTokenSecret().GetAwaiter().GetResult();
-                string tenantID = keyVaultProvider.GetTenantID().GetAwaiter().GetResult();
-                string appIDURI = keyVaultProvider.GetAppIDURI().GetAwaiter().GetResult();
+                string clientID = _keyVaultProvider.GetClientID().GetAwaiter().GetResult();
+                string tokenSecret = _keyVaultProvider.GetTokenSecret().GetAwaiter().GetResult();
+                string tenantID = _keyVaultProvider.GetTenantID().GetAwaiter().GetResult();
+                string appIDURI = _keyVaultProvider.GetAppIDURI().GetAwaiter().GetResult();
 
                 if (string.IsNullOrEmpty(clientID) ||
                     string.IsNullOrEmpty(tokenSecret) ||

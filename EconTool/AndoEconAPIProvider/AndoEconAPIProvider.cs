@@ -1,16 +1,12 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Net;
-using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 
-namespace EconTool
+namespace EconTool.AndoEconAPIProvider
 {
-    public class AndoEconAPIProvider
+    public class AndoEconAPIProvider : IAndoEconAPIProvider
     {
-        HttpClient _client = new HttpClient();
+        private readonly HttpClient _client = new HttpClient();
 
         public AndoEconAPIProvider(string bearer)
         {

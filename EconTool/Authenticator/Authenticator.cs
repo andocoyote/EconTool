@@ -1,14 +1,9 @@
 ﻿using Microsoft.Identity.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EconTool.Authenticator
 {
     // This is a Singleton implementation to only authenticate once to the APIs (obtain the bearer token)
-    public sealed class Authenticator
+    public sealed class Authenticator : IAuthenticator
     {
         public string ClientID { get; set; } = null;
         public string TokenSecret { get; set; } = null;
@@ -29,7 +24,7 @@ namespace EconTool.Authenticator
 
         private async Task Setup()
         {
-            ServicePrincipalProvider servicePrincipalProvider = new ServicePrincipalProvider();
+            IServicePrincipalProvider servicePrincipalProvider = new ServicePrincipalProvider(new KeyVaultProvider());
             ServicePrincipalModel servicePrincipalModel = servicePrincipalProvider.GetServicePrincipalModel();
 
             this.ClientID = servicePrincipalModel.ClientID;

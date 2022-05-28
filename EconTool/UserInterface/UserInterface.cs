@@ -1,21 +1,14 @@
-﻿using EconTool.Authenticator;
-using EconTool.Tests;
-using Microsoft.Identity.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EconTool.Tests;
 
 namespace EconTool.UserInterface
 {
     public class UserInterface
     {
-        private EconTool.Authenticator.Authenticator _authenticator = EconTool.Authenticator.Authenticator.Instance;
+        private readonly IAndoEconAPIProvider _andoEconAPIProvider = null;
 
-        public UserInterface()
+        public UserInterface(IAndoEconAPIProvider andoEconAPIProvider)
         {
-            ;
+            _andoEconAPIProvider = andoEconAPIProvider;
         }
 
         public async Task Run()
@@ -49,14 +42,14 @@ namespace EconTool.UserInterface
                     case "sp":
                         Console.WriteLine("Running the sample problems:");
 
-                        SampleProblems problems = new SampleProblems();
+                        SampleProblems problems = new SampleProblems(_andoEconAPIProvider);
                         await problems.MaxRevenueProblem();
 
                         break;
                     case "t":
                         Console.WriteLine("Running the tests:");
 
-                        EconToolTestRunner tests = new EconToolTestRunner();
+                        EconToolTestRunner tests = new EconToolTestRunner(_andoEconAPIProvider);
                         await tests.RunTests();
 
                         break;
@@ -113,8 +106,7 @@ namespace EconTool.UserInterface
                 Fx = fx
             };
 
-            AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_authenticator.AccessToken);
-            AndoEconDerivativeResponseModel response = await andoEconAPIProvider.DerivativeAsync(request);
+            AndoEconDerivativeResponseModel response = await _andoEconAPIProvider.DerivativeAsync(request);
 
             string result = ParseResult(response?.Derivative);
 
@@ -141,8 +133,7 @@ namespace EconTool.UserInterface
                 Variable = variable
             };
 
-            AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_authenticator.AccessToken);
-            AndoEconPartialDerivativeResponseModel response = await andoEconAPIProvider.PartialDerivativeAsync(request);
+            AndoEconPartialDerivativeResponseModel response = await _andoEconAPIProvider.PartialDerivativeAsync(request);
 
             string result = ParseResult(response?.PartialDerivative);
 
@@ -193,8 +184,7 @@ namespace EconTool.UserInterface
                 Subs = subs
             };
 
-            AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_authenticator.AccessToken);
-            AndoEconEvaluateResponseModel response = await andoEconAPIProvider.EvaluateAsync(request);
+            AndoEconEvaluateResponseModel response = await _andoEconAPIProvider.EvaluateAsync(request);
 
             string result = ParseResult(response?.Result);
 
@@ -217,8 +207,7 @@ namespace EconTool.UserInterface
                 Fx = fx
             };
 
-            AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_authenticator.AccessToken);
-            AndoEconSolveResponseModel response = await andoEconAPIProvider.SolveAsync(request);
+            AndoEconSolveResponseModel response = await _andoEconAPIProvider.SolveAsync(request);
 
             string result = ParseResult(response?.Result != null ? String.Join(", ", response?.Result.ToArray()) : null);
 
@@ -252,8 +241,7 @@ namespace EconTool.UserInterface
                 Cx = cx
             };
 
-            AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_authenticator.AccessToken);
-            AndoEconMaximumProfitResponseModel response = await andoEconAPIProvider.MaximumProfitAsync(request);
+            AndoEconMaximumProfitResponseModel response = await _andoEconAPIProvider.MaximumProfitAsync(request);
 
             if (response == null)
             {
@@ -287,8 +275,7 @@ namespace EconTool.UserInterface
                 Fx = fx
             };
 
-            AndoEconAPIProvider andoEconAPIProvider = new AndoEconAPIProvider(_authenticator.AccessToken);
-            AndoEconMaximumRevenueResponseModel response = await andoEconAPIProvider.MaximumRevenueAsync(request);
+            AndoEconMaximumRevenueResponseModel response = await _andoEconAPIProvider.MaximumRevenueAsync(request);
 
             if (response == null)
             {
