@@ -1,4 +1,4 @@
-﻿namespace EconTool
+﻿namespace EconTool.KeyVaultProvider
 {
     public interface IKeyVaultProvider
     {

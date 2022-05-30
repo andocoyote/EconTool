@@ -1,4 +1,5 @@
 ﻿using Microsoft.Identity.Client;
+using EconTool.AndoEconAPIProvider;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace EconTool.Tests
 
         public async Task RunTests()
         {
-            EconTool.Authenticator.Authenticator authenticator = EconTool.Authenticator.Authenticator.Instance;
+            EconTool.Authenticator.AuthenticatorSingleton authenticator = EconTool.Authenticator.AuthenticatorSingleton.Instance;
 
             _tests.Add(
                 new DerivativeTest(

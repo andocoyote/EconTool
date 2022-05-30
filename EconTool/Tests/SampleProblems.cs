@@ -1,4 +1,6 @@
-﻿namespace EconTool.Tests
+﻿using EconTool.AndoEconAPIProvider;
+
+namespace EconTool.Tests
 {
     public class SampleProblems
     {

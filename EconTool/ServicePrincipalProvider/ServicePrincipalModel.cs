@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EconTool
+namespace EconTool.ServicePrincipalProvider
 {
     public class ServicePrincipalModel
     {

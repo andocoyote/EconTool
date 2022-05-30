@@ -6,12 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EconTool
+namespace EconTool.KeyVaultProvider
 {
     public class KeyVaultProvider : IKeyVaultProvider
     {
-        private string _keyVaultName = "kv-general-key-vault";
-        private SecretClient _client = null;
+        private readonly string _keyVaultName = "kv-general-key-vault";
+        private readonly SecretClient _client = null;
 
         public KeyVaultProvider()
         {

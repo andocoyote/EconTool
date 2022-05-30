@@ -4,7 +4,8 @@ using Microsoft.Identity.Client;
 
 namespace EconTool.Authenticator
 {
-    public sealed class Authenticator : IAuthenticator
+    // This is a Singleton implementation to only authenticate once to the APIs (obtain the bearer token)
+    public sealed class AuthenticatorSingleton : IAuthenticator
     {
         public string ClientID { get; set; } = null;
         public string TokenSecret { get; set; } = null;
@@ -12,19 +13,22 @@ namespace EconTool.Authenticator
         public string AppIDURI { get; set; } = null;
         public string AccessToken { get; set; } = null;
 
-        private readonly IServicePrincipalProvider _servicePrincipalProvider = null;
+        // Lazily create the Authenticator object when needed
+        private static readonly Lazy<AuthenticatorSingleton> lazy =
+            new Lazy<AuthenticatorSingleton>(() => new AuthenticatorSingleton());
+
+        public static AuthenticatorSingleton Instance { get { return lazy.Value; } }
 
         // Authenticator users a ServicePrincipalProvider to get AAD credentials and the bearer token
-        public Authenticator(IServicePrincipalProvider servicePrincipalProvider)
+        public AuthenticatorSingleton()
         {
-            this._servicePrincipalProvider = servicePrincipalProvider;
-
             Setup().GetAwaiter().GetResult();
         }
 
         private async Task Setup()
         {
-            ServicePrincipalModel servicePrincipalModel = _servicePrincipalProvider.GetServicePrincipalModel();
+            IServicePrincipalProvider servicePrincipalProvider = new EconTool.ServicePrincipalProvider.ServicePrincipalProvider(new EconTool.KeyVaultProvider.KeyVaultProvider());
+            ServicePrincipalModel servicePrincipalModel = servicePrincipalProvider.GetServicePrincipalModel();
 
             this.ClientID = servicePrincipalModel.ClientID;
             this.TokenSecret = servicePrincipalModel.TokenSecret;
