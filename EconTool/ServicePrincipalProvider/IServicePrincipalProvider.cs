@@ -1,4 +1,4 @@
-﻿namespace EconTool
+﻿namespace EconTool.ServicePrincipalProvider
 {
     public interface IServicePrincipalProvider
     {

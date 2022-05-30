@@ -1,4 +1,6 @@
-﻿namespace EconTool
+﻿using EconTool.KeyVaultProvider;
+
+namespace EconTool.ServicePrincipalProvider
 {
     public class ServicePrincipalProvider : IServicePrincipalProvider
     {

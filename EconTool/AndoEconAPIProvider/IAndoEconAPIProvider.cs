@@ -1,4 +1,4 @@
-﻿namespace EconTool
+﻿namespace EconTool.AndoEconAPIProvider
 {
     public interface IAndoEconAPIProvider
     {
