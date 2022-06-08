@@ -1,5 +1,4 @@
-﻿using EconTool.KeyVaultProvider;
-using EconTool.ServicePrincipalProvider;
+﻿using EconTool.ServicePrincipalProvider;
 using Microsoft.Identity.Client;
 
 namespace EconTool.Authenticator

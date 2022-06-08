@@ -1,6 +1,4 @@
 ﻿using EconTool.AndoEconAPIProvider;
-using Microsoft.Identity.Client;
-using System;
 
 namespace EconTool.Tests
 {
