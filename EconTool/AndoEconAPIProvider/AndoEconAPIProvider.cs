@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using EconTool.Authenticator;
+using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -8,13 +9,13 @@ namespace EconTool.AndoEconAPIProvider
     {
         private readonly HttpClient _client = new HttpClient();
 
-        public AndoEconAPIProvider(string bearer)
+        public AndoEconAPIProvider(IAuthenticator authenticator)
         {
             _client.BaseAddress = new Uri("https://andoeconapis.azurewebsites.net/");
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-            _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + bearer);
+            _client.DefaultRequestHeaders.Add("Authorization", "Bearer " + authenticator.AccessToken);
         }
 
         public async Task<AndoEconDerivativeResponseModel> DerivativeAsync(AndoEconDerivativeRequestModel request)

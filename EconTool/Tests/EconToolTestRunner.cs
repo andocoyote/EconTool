@@ -1,10 +1,4 @@
-﻿using Microsoft.Identity.Client;
-using EconTool.AndoEconAPIProvider;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EconTool.AndoEconAPIProvider;
 
 namespace EconTool.Tests
 {

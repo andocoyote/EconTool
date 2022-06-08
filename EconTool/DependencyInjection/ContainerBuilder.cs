@@ -12,17 +12,20 @@ namespace EconTool.DependencyInjection
 
         public IServiceProvider Build()
         {
-            // Using Singleton but could also use Transient
+            // Using Singleton for these as we only ever need one instance of each in the entire system
             _serviceCollection.AddSingleton<IKeyVaultProvider, EconTool.KeyVaultProvider.KeyVaultProvider>();
 
             // ServicePrincipalProvider needs a KeyVaultProvider in the constructor
-            _serviceCollection.AddSingleton<IServicePrincipalProvider>(x => new EconTool.ServicePrincipalProvider.ServicePrincipalProvider(x.GetService<IKeyVaultProvider>()));
+            _serviceCollection.AddSingleton<IServicePrincipalProvider, EconTool.ServicePrincipalProvider.ServicePrincipalProvider>();
 
             // Authenticator needs a ServicePrincipalProvider in the constructor
-            _serviceCollection.AddSingleton<IAuthenticator>(x => new EconTool.Authenticator.Authenticator(x.GetService<IServicePrincipalProvider>()));
+            _serviceCollection.AddSingleton<IAuthenticator, EconTool.Authenticator.Authenticator>();
 
             // AndoEconAPIProvider needs the bearer token from Authenticator in the constructor
-            _serviceCollection.AddSingleton<IAndoEconAPIProvider>(x => new EconTool.AndoEconAPIProvider.AndoEconAPIProvider(x.GetService<IAuthenticator>().AccessToken));
+            //_serviceCollection.AddSingleton<IAndoEconAPIProvider>(x => new EconTool.AndoEconAPIProvider.AndoEconAPIProvider(x.GetService<IAuthenticator>().AccessToken));
+            _serviceCollection.AddSingleton<IAndoEconAPIProvider, EconTool.AndoEconAPIProvider.AndoEconAPIProvider>();
+
+            _serviceCollection.AddSingleton<EconTool.UserInterface.UserInterface>();
 
             return _serviceCollection.BuildServiceProvider();
         }
