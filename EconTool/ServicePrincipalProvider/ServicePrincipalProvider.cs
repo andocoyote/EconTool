@@ -12,16 +12,16 @@ namespace EconTool.ServicePrincipalProvider
         }
 
         // Uses the KeyVaultProvider to build an instance of the ServicePrincipalModel
-        public ServicePrincipalModel GetServicePrincipalModel()
+        public async Task<ServicePrincipalModel> GetServicePrincipalModel()
         {
             ServicePrincipalModel servicePrincipalModel = null;
 
             try
             {
-                string clientID = _keyVaultProvider.GetClientID().GetAwaiter().GetResult();
-                string tokenSecret = _keyVaultProvider.GetTokenSecret().GetAwaiter().GetResult();
-                string tenantID = _keyVaultProvider.GetTenantID().GetAwaiter().GetResult();
-                string appIDURI = _keyVaultProvider.GetAppIDURI().GetAwaiter().GetResult();
+                string clientID = await _keyVaultProvider.GetClientID();
+                string tokenSecret = await _keyVaultProvider.GetTokenSecret();
+                string tenantID = await _keyVaultProvider.GetTenantID();
+                string appIDURI = await _keyVaultProvider.GetAppIDURI();
 
                 if (string.IsNullOrEmpty(clientID) ||
                     string.IsNullOrEmpty(tokenSecret) ||

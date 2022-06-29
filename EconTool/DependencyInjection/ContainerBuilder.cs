@@ -2,32 +2,30 @@
 using EconTool.Authenticator;
 using EconTool.KeyVaultProvider;
 using EconTool.ServicePrincipalProvider;
+using EconTool.UserInterface;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EconTool.DependencyInjection
 {
-    public class ContainerBuilder
+    public static class ContainerBuilder
     {
-        private readonly ServiceCollection _serviceCollection = new ServiceCollection();
-
-        public IServiceProvider Build()
+        public static void ConfigureServices(IServiceCollection serviceCollection)
         {
             // Using Singleton for these as we only ever need one instance of each in the entire system
-            _serviceCollection.AddSingleton<IKeyVaultProvider, EconTool.KeyVaultProvider.KeyVaultProvider>();
+            serviceCollection.AddSingleton<IKeyVaultProvider, EconTool.KeyVaultProvider.KeyVaultProvider>();
 
             // ServicePrincipalProvider needs a KeyVaultProvider in the constructor
-            _serviceCollection.AddSingleton<IServicePrincipalProvider, EconTool.ServicePrincipalProvider.ServicePrincipalProvider>();
+            serviceCollection.AddSingleton<IServicePrincipalProvider, EconTool.ServicePrincipalProvider.ServicePrincipalProvider>();
 
             // Authenticator needs a ServicePrincipalProvider in the constructor
-            _serviceCollection.AddSingleton<IAuthenticator, EconTool.Authenticator.Authenticator>();
+            serviceCollection.AddSingleton<IAuthenticator, EconTool.Authenticator.Authenticator>();
 
             // AndoEconAPIProvider needs the bearer token from Authenticator in the constructor
             //_serviceCollection.AddSingleton<IAndoEconAPIProvider>(x => new EconTool.AndoEconAPIProvider.AndoEconAPIProvider(x.GetService<IAuthenticator>().AccessToken));
-            _serviceCollection.AddSingleton<IAndoEconAPIProvider, EconTool.AndoEconAPIProvider.AndoEconAPIProvider>();
+            serviceCollection.AddSingleton<IAndoEconAPIProvider, EconTool.AndoEconAPIProvider.AndoEconAPIProvider>();
 
-            _serviceCollection.AddSingleton<EconTool.UserInterface.UserInterface>();
-
-            return _serviceCollection.BuildServiceProvider();
+            // MenuInterface uses everything
+            serviceCollection.AddSingleton<IUserInterface, EconTool.MenuInterface.MenuInterface>();
         }
     }
 }
