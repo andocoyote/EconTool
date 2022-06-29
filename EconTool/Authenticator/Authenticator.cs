@@ -23,7 +23,7 @@ namespace EconTool.Authenticator
 
         private async Task Setup()
         {
-            ServicePrincipalModel servicePrincipalModel = _servicePrincipalProvider.GetServicePrincipalModel();
+            ServicePrincipalModel servicePrincipalModel = await _servicePrincipalProvider.GetServicePrincipalModel();
 
             this.ClientID = servicePrincipalModel.ClientID;
             this.TokenSecret = servicePrincipalModel.TokenSecret;

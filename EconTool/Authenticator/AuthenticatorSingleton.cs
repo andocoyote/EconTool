@@ -27,7 +27,7 @@ namespace EconTool.Authenticator
         private async Task Setup()
         {
             IServicePrincipalProvider servicePrincipalProvider = new EconTool.ServicePrincipalProvider.ServicePrincipalProvider(new EconTool.KeyVaultProvider.KeyVaultProvider());
-            ServicePrincipalModel servicePrincipalModel = servicePrincipalProvider.GetServicePrincipalModel();
+            ServicePrincipalModel servicePrincipalModel = await servicePrincipalProvider.GetServicePrincipalModel();
 
             this.ClientID = servicePrincipalModel.ClientID;
             this.TokenSecret = servicePrincipalModel.TokenSecret;

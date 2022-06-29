@@ -2,6 +2,6 @@
 {
     public interface IServicePrincipalProvider
     {
-        ServicePrincipalModel GetServicePrincipalModel();
+        Task<ServicePrincipalModel> GetServicePrincipalModel();
     }
 }

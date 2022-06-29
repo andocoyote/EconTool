@@ -1,18 +1,19 @@
 ﻿using EconTool.AndoEconAPIProvider;
 using EconTool.Tests;
+using EconTool.UserInterface;
 
-namespace EconTool.UserInterface
+namespace EconTool.MenuInterface
 {
-    public class UserInterface
+    public class MenuInterface : IUserInterface
     {
         private readonly IAndoEconAPIProvider _andoEconAPIProvider = null;
 
-        public UserInterface(IAndoEconAPIProvider andoEconAPIProvider)
+        public MenuInterface(IAndoEconAPIProvider andoEconAPIProvider)
         {
             _andoEconAPIProvider = andoEconAPIProvider;
         }
 
-        public async Task Run()
+        public async Task<bool> Run()
         {
             string selection = "";
 
@@ -66,6 +67,8 @@ namespace EconTool.UserInterface
                         break;
                 }
             }
+
+            return true;
         }
 
         private string MainMenu()
